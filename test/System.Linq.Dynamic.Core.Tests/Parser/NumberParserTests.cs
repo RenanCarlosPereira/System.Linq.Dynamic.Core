@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq.Dynamic.Core.Parser;
@@ -151,6 +151,54 @@ namespace System.Linq.Dynamic.Core.Tests.Parser
 
             // Assert
             result.Value.Should().Be(expected);
+        }
+
+        [Theory]
+        [InlineData("42", 'm', 42)]
+        [InlineData("-42", 'm', -42)]
+        [InlineData("42m", 'm', 42)]
+        [InlineData("-42m", 'm', -42)]
+        public void NumberParser_ParseDecimalLiteral(string text, char qualifier, decimal expected)
+        {
+            // Arrange
+
+            // Act
+            var result = new NumberParser(_parsingConfig).ParseRealLiteral(text, qualifier, true) as ConstantExpression;
+
+            // Assert
+            result!.Value.Should().Be(expected);
+        }
+
+        [Theory]
+        [InlineData("42", 'd', 42)]
+        [InlineData("-42", 'd', -42)]
+        [InlineData("42d", 'd', 42)]
+        [InlineData("-42d", 'd', -42)]
+        public void NumberParser_ParseDoubleLiteral(string text, char qualifier, double expected)
+        {
+            // Arrange
+
+            // Act
+            var result = new NumberParser(_parsingConfig).ParseRealLiteral(text, qualifier, true) as ConstantExpression;
+
+            // Assert
+            result!.Value.Should().Be(expected);
+        }
+
+        [Theory]
+        [InlineData("42", 'f', 42)]
+        [InlineData("-42", 'f', -42)]
+        [InlineData("42f", 'f', 42)]
+        [InlineData("-42f", 'f', -42)]
+        public void NumberParser_ParseFloatLiteral(string text, char qualifier, float expected)
+        {
+            // Arrange
+
+            // Act
+            var result = new NumberParser(_parsingConfig).ParseRealLiteral(text, qualifier, true) as ConstantExpression;
+
+            // Assert
+            result!.Value.Should().Be(expected);
         }
     }
 }
